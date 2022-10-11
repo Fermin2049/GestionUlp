@@ -1,0 +1,22 @@
+### Java ###
+# Clases compiladas
+*.class
+
+# Archivos de log
+*.log
+
+# Posibles archivos de BlueJ
+*.ctxt
+*.bluej
+
+# Mobile Tools for Java (J2ME)
+.mtj.tmp/
+
+# Paquetes
+*.jar
+*.war
+*.nar
+*.ear
+*.zip
+*.tar.gz
+*.rar
