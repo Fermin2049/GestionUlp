@@ -10,8 +10,8 @@ import VistaAlumnos.editarAlumno;
 import VistaAlumnos.eliminarAlumno;
 import VistaAlumnos.vistaAgregarAlumno;
 import VistaAlumnoYMateria.Calificaciones;
-import VistaAlumnoYMateria.alumnosPorMateria;
-import VistaAlumnoYMateria.materiaPorAlumnos;
+import VistaAlumnoYMateria.VerAlumnosDeUnaMateria;
+import VistaAlumnoYMateria.VerMateriasDeUnAlumno;
 import VistaInscripciones.inscripciones;
 import VistaMaterias.agregarMateria;
 import VistaMaterias.editarMateria;
@@ -272,7 +272,7 @@ public class MenuPrincipal extends javax.swing.JFrame {
     private void jmiMateriaXAlumnoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jmiMateriaXAlumnoActionPerformed
         panelPrincipal.removeAll();
         panelPrincipal.repaint();
-        materiaPorAlumnos vent = new materiaPorAlumnos();
+        VerMateriasDeUnAlumno vent = new VerMateriasDeUnAlumno();
         vent.setVisible(true);
         panelPrincipal.add(vent);
         centrarVentanaInterna(vent);
@@ -308,7 +308,7 @@ public class MenuPrincipal extends javax.swing.JFrame {
     private void jmiAlumnosXMateriaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jmiAlumnosXMateriaActionPerformed
         panelPrincipal.removeAll();
         panelPrincipal.repaint();
-        alumnosPorMateria vent = new alumnosPorMateria();
+        VerAlumnosDeUnaMateria vent = new VerAlumnosDeUnaMateria();
         vent.setVisible(true);
         panelPrincipal.add(vent);
         centrarVentanaInterna(vent);

@@ -66,7 +66,7 @@ public class vistaAgregarAlumno extends javax.swing.JInternalFrame {
         jLabel3.setText("Apellido:");
 
         jLabel4.setFont(new java.awt.Font("Times New Roman", 0, 14)); // NOI18N
-        jLabel4.setText("Dni:");
+        jLabel4.setText("Legajo:");
 
         jTextNombre.setToolTipText("Ingresar Nombre.");
         jTextNombre.addActionListener(new java.awt.event.ActionListener() {

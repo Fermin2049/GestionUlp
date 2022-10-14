@@ -6,21 +6,37 @@
 package VistaAlumnoYMateria;
 
 import Data.AlumnoData;
+import Data.InscripcionData;
+import Data.MateriaData;
 import pruebaappulp.Alumno;
 import java.util.ArrayList;
 import javax.swing.table.DefaultTableModel;
+import pruebaappulp.Inscripcion;
+import pruebaappulp.Materia;
 
 
-public class materiaPorAlumnos extends javax.swing.JInternalFrame {
+public class VerMateriasDeUnAlumno extends javax.swing.JInternalFrame {
 
     private DefaultTableModel modelo;
-    AlumnoData ad = new AlumnoData();
+    
+    private ArrayList<Inscripcion> listaInscripcion;
+    private ArrayList<Materia> listaMateria;
+    private ArrayList<Alumno> listaAlumno;
 
-    public materiaPorAlumnos() {
+    public VerMateriasDeUnAlumno() {
         initComponents();
         modelo = new DefaultTableModel();
+        AlumnoData ad = new AlumnoData();
+        InscripcionData id = new InscripcionData();
+        MateriaData md = new MateriaData();
+        
+        listaAlumno = (ArrayList) ad.listarTodosLosAlumnos();
+        listaMateria = (ArrayList) md.listarTodasLasMaterias();
+        listaInscripcion = (ArrayList) id.obtenerInscripciones();
+        
         llenarComboAlumno();
         cabezeraDeTabla();
+        cargarDatosEnLaTabla();
     }
 
     public void limpiarCampos() {
@@ -28,11 +44,11 @@ public class materiaPorAlumnos extends javax.swing.JInternalFrame {
     }
 
     public void llenarComboAlumno() {
-        ArrayList<Alumno> listaAlumnos = (ArrayList<Alumno>) ad.listarTodosLosAlumnos();
-        for (Alumno a : listaAlumnos) {
+        
+        for (Alumno a : listaAlumno) {
             jComboAlumno.addItem(a);
         }
-        jComboAlumno.setSelectedIndex(-1);
+        //jComboAlumno.setSelectedIndex(-1);//cuando lo lo habilito salta un error y no se porque
 
     }
 
@@ -53,6 +69,22 @@ public class materiaPorAlumnos extends javax.swing.JInternalFrame {
         int a = modelo.getRowCount() - 1;
         for (int i = a; i >= 0; i--) {
             modelo.removeRow(i);
+        }
+
+    }
+    
+    public void cargarDatosEnLaTabla() {
+        borrarFilasTabla();
+        
+        Alumno a = (Alumno) jComboAlumno.getSelectedItem();
+        for (Inscripcion i : listaInscripcion) {
+            if (i.getAlumno().getIdAlumno()==a.getIdAlumno()) {
+                modelo.addRow(new Object[]{
+                    i.getMateria().getIdMateria(),
+                    i.getMateria().getNombre(),
+                    i.getMateria().getAnio(),
+                    i.getNota()});
+            }
         }
 
     }
@@ -152,7 +184,7 @@ public class materiaPorAlumnos extends javax.swing.JInternalFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jComboAlumnoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboAlumnoActionPerformed
-
+        cargarDatosEnLaTabla();
 
     }//GEN-LAST:event_jComboAlumnoActionPerformed
 

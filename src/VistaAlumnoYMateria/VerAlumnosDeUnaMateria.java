@@ -15,7 +15,7 @@ import java.util.ArrayList;
 import javax.swing.table.DefaultTableModel;
 
 
-public class alumnosPorMateria extends javax.swing.JInternalFrame {
+public class VerAlumnosDeUnaMateria extends javax.swing.JInternalFrame {
 
     
     private DefaultTableModel modelo;
@@ -23,13 +23,14 @@ public class alumnosPorMateria extends javax.swing.JInternalFrame {
     private ArrayList<Materia> listaMateria;
     private ArrayList<Alumno> listaAlumno;
 
-    public alumnosPorMateria() {
+    public VerAlumnosDeUnaMateria() {
         initComponents();
+        modelo = new DefaultTableModel();
         AlumnoData ad = new AlumnoData();
         MateriaData md = new MateriaData();
         InscripcionData id = new InscripcionData();
         
-        modelo = new DefaultTableModel();
+        
         listaInscripcion = (ArrayList) id.obtenerInscripciones();
         listaMateria = (ArrayList) md.listarTodasLasMaterias();
         listaAlumno = (ArrayList) ad.listarTodosLosAlumnos();
@@ -42,6 +43,7 @@ public class alumnosPorMateria extends javax.swing.JInternalFrame {
         for (Materia m : listaMateria) {
             jComboMateria.addItem(m);
         }
+        //jComboMateria.setSelectedIndex(-1);
     }
     
 

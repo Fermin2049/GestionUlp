@@ -17,47 +17,52 @@ import javax.swing.table.DefaultTableModel;
 
 
 public class Calificaciones extends javax.swing.JInternalFrame {
-
-    
-    private DefaultTableModel modelo;
     private ArrayList<Inscripcion> listaInscripcion;
     private ArrayList<Materia> listaMateria;
     private ArrayList<Alumno> listaAlumno;
-
-
-    AlumnoData ad = new AlumnoData();
-    MateriaData md = new MateriaData();
     InscripcionData id = new InscripcionData();
-    Materia m = new Materia();
+    private DefaultTableModel modelo;
+    
+    
 
     public Calificaciones() {
         initComponents();
         modelo = new DefaultTableModel();
+        modelo = new DefaultTableModel();
+        AlumnoData ad = new AlumnoData();
+        InscripcionData id = new InscripcionData();
+        MateriaData md = new MateriaData();
+        
+        listaAlumno = (ArrayList) ad.listarTodosLosAlumnos();
+        listaMateria = (ArrayList) md.listarTodasLasMaterias();
+        listaInscripcion = (ArrayList) id.obtenerInscripciones();
         llenarComboAlumno();
         cabezeraDeTabla();
     }
 
-    public void llenarComboAlumno(){
-        ArrayList<Alumno> listaAlumnos = (ArrayList<Alumno>) ad.listarAlumnos();
-
-        for (Alumno a : listaAlumnos) {
-            jComboAlumno.addItem(a);
-            }
+    public void limpiarCampos() {
         jComboAlumno.setSelectedIndex(-1);
     }
-    
-    
+
+    public void llenarComboAlumno() {
+        
+        for (Alumno a : listaAlumno) {
+            jComboAlumno.addItem(a);
+        }
+        //jComboAlumno.setSelectedIndex(-1);
+
+    }
 
     public void cabezeraDeTabla() {
         ArrayList<Object> columna = new ArrayList<Object>();
-        columna.add("ID Materia");
+        columna.add("ID");
         columna.add("Materia");
         columna.add("Año");
         columna.add("Nota");
         for (Object it : columna) {
             modelo.addColumn(it);
         }
-        jTableCalificaciones.setModel(modelo);
+        jTableMaterias.setModel(modelo);
 
     }
 
@@ -66,11 +71,23 @@ public class Calificaciones extends javax.swing.JInternalFrame {
         for (int i = a; i >= 0; i--) {
             modelo.removeRow(i);
         }
+
     }
     
-    public void ListarMaterias(){
+    public void cargarDatosEnLaTabla() {
         borrarFilasTabla();
-        
+
+        Alumno a = (Alumno) jComboAlumno.getSelectedItem();
+        for (Inscripcion i : listaInscripcion) {
+            if (i.getAlumno().getIdAlumno() == a.getIdAlumno()) {
+                modelo.addRow(new Object[]{
+                    i.getMateria().getIdMateria(),
+                    i.getMateria().getNombre(),
+                    i.getMateria().getAnio(),
+                    i.getNota()});
+            }
+        }
+
     }
 
     
@@ -87,7 +104,7 @@ public class Calificaciones extends javax.swing.JInternalFrame {
         jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
-        jTableCalificaciones = new javax.swing.JTable();
+        jTableMaterias = new javax.swing.JTable();
         jComboAlumno = new javax.swing.JComboBox<>();
         jButtonGuardar = new javax.swing.JButton();
         jButtonSalir = new javax.swing.JButton();
@@ -108,7 +125,7 @@ public class Calificaciones extends javax.swing.JInternalFrame {
         jLabel2.setFont(new java.awt.Font("Times New Roman", 0, 14)); // NOI18N
         jLabel2.setText("Alumno:");
 
-        jTableCalificaciones.setModel(new javax.swing.table.DefaultTableModel(
+        jTableMaterias.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {null, null, null, null},
                 {null, null, null, null},
@@ -119,12 +136,12 @@ public class Calificaciones extends javax.swing.JInternalFrame {
                 "Title 1", "Title 2", "Title 3", "Title 4"
             }
         ));
-        jTableCalificaciones.addMouseListener(new java.awt.event.MouseAdapter() {
+        jTableMaterias.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
-                jTableCalificacionesMouseClicked(evt);
+                jTableMateriasMouseClicked(evt);
             }
         });
-        jScrollPane1.setViewportView(jTableCalificaciones);
+        jScrollPane1.setViewportView(jTableMaterias);
 
         jComboAlumno.setToolTipText("Seleccionar Alumno.");
         jComboAlumno.addActionListener(new java.awt.event.ActionListener() {
@@ -248,19 +265,24 @@ public class Calificaciones extends javax.swing.JInternalFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jComboAlumnoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboAlumnoActionPerformed
-
+        cargarDatosEnLaTabla();
         
     }//GEN-LAST:event_jComboAlumnoActionPerformed
 
     private void jButtonGuardarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonGuardarActionPerformed
         // TODO add your handling code here:
-        int filaElegida = jTableCalificaciones.getSelectedRow();
-        Alumno a = (Alumno) jComboAlumno.getSelectedItem();
-        int idMateria =  (Integer) jTableCalificaciones.getValueAt(filaElegida, 0);
+        int filaElegida = jTableMaterias.getSelectedRow();
+        if(filaElegida != -1){
+            Alumno a = (Alumno) jComboAlumno.getSelectedItem();
+        int idMateria =  (Integer) jTableMaterias.getValueAt(filaElegida, 0);
         
-        Double nuevaNota = Double.parseDouble(jTextNota.getText());
+        double nuevaNota = Double.parseDouble(jTextNota.getText());
         
-        id.actualizarNota(nuevaNota, a.getIdAlumno(), m.getIdMateria());
+        id.actualizarNota(nuevaNota,a.getIdAlumno(), idMateria);
+        }else{
+            JOptionPane.showMessageDialog(this, "debe seccionar la fila");
+        }
+        
 
     }//GEN-LAST:event_jButtonGuardarActionPerformed
 
@@ -269,10 +291,10 @@ public class Calificaciones extends javax.swing.JInternalFrame {
         this.dispose();
     }//GEN-LAST:event_jButtonSalirActionPerformed
 
-    private void jTableCalificacionesMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTableCalificacionesMouseClicked
+    private void jTableMateriasMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTableMateriasMouseClicked
         // TODO add your handling code here:
         
-    }//GEN-LAST:event_jTableCalificacionesMouseClicked
+    }//GEN-LAST:event_jTableMateriasMouseClicked
 
     private void jTextNotaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextNotaActionPerformed
         // TODO add your handling code here:
@@ -301,7 +323,7 @@ public class Calificaciones extends javax.swing.JInternalFrame {
     private javax.swing.JLabel jLabel5;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JSeparator jSeparator1;
-    private javax.swing.JTable jTableCalificaciones;
+    private javax.swing.JTable jTableMaterias;
     private javax.swing.JTextField jTextNota;
     // End of variables declaration//GEN-END:variables
 }
