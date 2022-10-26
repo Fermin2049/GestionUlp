@@ -96,16 +96,16 @@ public class InscripcionData {
             ResultSet rs = ps.executeQuery();
 
             while (rs.next()) {
-                Inscripcion c = new Inscripcion();
-                c.setIdInscripcion(rs.getInt("idInscripcion"));
+                Inscripcion i = new Inscripcion();
+                i.setIdInscripcion(rs.getInt("idInscripcion"));
                 Alumno a = ad.buscarAlumno(rs.getInt("idAlumno"));
-                c.setAlumno(a);
+                i.setAlumno(a);
                 Materia m = md.buscarMateria(rs.getInt("idMateria"));
-                c.setMateria(m);
-                c.setNota(rs.getDouble("nota"));
-                c.setEstado(rs.getBoolean("estado"));
+                i.setMateria(m);
+                i.setNota(rs.getDouble("nota"));
+                i.setEstado(rs.getBoolean("estado"));
 
-                listaInscripcion.add(c);
+                listaInscripcion.add(i);
             }
 
         } catch (SQLException ex) {
